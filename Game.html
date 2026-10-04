@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Tic Tac Toe | Classic Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e2b3c 0%, #0f1a26 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            border-radius: 3.5rem;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 500px;
+            transition: all 0.2s ease;
+        }
+
+        h1 {
+            color: #f0e6d3;
+            font-weight: 500;
+            letter-spacing: 0.3rem;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            word-spacing: 0.2rem;
+        }
+
+        .status-panel {
+            background: rgba(10, 20, 30, 0.6);
+            border-radius: 4rem;
+            padding: 0.8rem 2.2rem;
+            margin: 1.2rem 0 1.8rem;
+            color: #e6d7b4;
+            font-size: 1.5rem;
+            font-weight: 500;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            min-width: 200px;
+            transition: background 0.3s;
+            border: 1px solid rgba(255, 255, 200, 0.2);
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            background: transparent;
+            margin: 0.5rem 0 1.8rem;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+        }
+
+        .cell {
+            background: rgba(20, 30, 40, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4.5rem;
+            font-weight: 700;
+            color: #f7e5c2;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            aspect-ratio: 1 / 1;
+            user-select: none;
+            border: 1px solid rgba(220, 200, 150, 0.25);
+        }
+
+        .cell:hover {
+            background: rgba(45, 65, 85, 0.8);
+            transform: scale(1.02);
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 215, 140, 0.3);
+            border-color: rgba(255, 215, 120, 0.5);
+        }
+
+        .cell.x-move {
+            color: #f7c56c;
+            text-shadow: 0 0 18px #f0a500;
+        }
+
+        .cell.o-move {
+            color: #a4d1f2;
+            text-shadow: 0 0 18px #3e6fa0;
+        }
+
+        .cell.disabled {
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 0.8rem;
+        }
+
+        .btn {
+            background: rgba(230, 210, 170, 0.12);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 235, 170, 0.4);
+            padding: 0.8rem 2.2rem;
+            border-radius: 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #efe5cd;
+            letter-spacing: 0.05rem;
+            cursor: pointer;
+            transition: 0.25s;
+            background: rgba(25, 35, 45, 0.7);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .btn:hover {
+            background: #3f5568;
+            border-color: #f7d98c;
+            color: #ffffff;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .winner-highlight {
+            background: rgba(70, 110, 70, 0.75) !important;
+            border-color: #ffd966 !important;
+            box-shadow: 0 0 24px #e6b422;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 450px) {
+            .game-container {
+                padding: 1.8rem 1.2rem;
+            }
+
+            .cell {
+                font-size: 3.5rem;
+                border-radius: 1.2rem;
+            }
+
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-container">
+        <h1>TIC TAC TOE</h1>
+
+        <div class="status-panel" id="statusDisplay">Player X's turn</div>
+
+        <div class="board" id="boardContainer">
+            <!-- Cells will be generated by JavaScript -->
+        </div>
+
+        <div class="button-group">
+            <button class="btn" id="resetButton">↺ New Game</button>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            // ----- Game State -----
+            const boardEl = document.getElementById('boardContainer');
+            const statusEl = document.getElementById('statusDisplay');
+
+            // Board array: 0..8, null means empty, 'X' or 'O'
+            let board = Array(9).fill(null);
+
+            // Current player: 'X' always starts
+            let currentPlayer = 'X';
+
+            // Game active flag (prevents moves after game over)
+            let gameActive = true;
+
+            // Winning combinations (indices)
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+                [0, 4, 8], [2, 4, 6]            // diagonals
+            ];
+
+            // ----- Helper Functions -----
+            function checkWinner(boardArray) {
+                for (let pattern of winPatterns) {
+                    const [a, b, c] = pattern;
+                    if (boardArray[a] && boardArray[a] === boardArray[b] && boardArray[b] === boardArray[c]) {
+                        return { winner: boardArray[a], combo: pattern };
+                    }
+                }
+                return null;
+            }
+
+            function isBoardFull(boardArray) {
+                return boardArray.every(cell => cell !== null);
+            }
+
+            function getGameStatus() {
+                const winnerResult = checkWinner(board);
+                if (winnerResult) {
+                    return { type: 'win', player: winnerResult.winner, combo: winnerResult.combo };
+                }
+                if (isBoardFull(board)) {
+                    return { type: 'draw' };
+                }
+                return { type: 'active' };
+            }
+
+            // Update UI: render cells and status message
+            function renderBoard() {
+                // Clear existing cells
+                boardEl.innerHTML = '';
+
+                // Recreate all 9 cells
+                for (let i = 0; i < 9; i++) {
+                    const cellValue = board[i];
+                    const cellDiv = document.createElement('div');
+                    cellDiv.className = 'cell';
+
+                    // Add class based on move for styling
+                    if (cellValue === 'X') {
+                        cellDiv.classList.add('x-move');
+                    } else if (cellValue === 'O') {
+                        cellDiv.classList.add('o-move');
+                    }
+
+                    cellDiv.textContent = cellValue || '';
+                    cellDiv.dataset.index = i;
+
+                    // Attach click event listener
+                    cellDiv.addEventListener('click', cellClickHandler);
+
+                    // If game inactive OR cell already filled, disable pointer events via class
+                    if (!gameActive || cellValue !== null) {
+                        cellDiv.classList.add('disabled');
+                    }
+
+                    boardEl.appendChild(cellDiv);
+                }
+
+                // Highlight winning cells if game ended with win
+                const status = getGameStatus();
+                if (status.type === 'win' && status.combo) {
+                    const comboIndices = status.combo;
+                    const allCells = document.querySelectorAll('.cell');
+                    comboIndices.forEach(idx => {
+                        if (allCells[idx]) {
+                            allCells[idx].classList.add('winner-highlight');
+                        }
+                    });
+                }
+
+                // Update status message
+                updateStatusMessage(status);
+            }
+
+            function updateStatusMessage(status = null) {
+                if (!status) {
+                    status = getGameStatus();
+                }
+
+                if (status.type === 'win') {
+                    statusEl.textContent = ` Player ${status.player} wins!`;
+                } else if (status.type === 'draw') {
+                    statusEl.textContent = ` It's a draw!`;
+                } else {
+                    statusEl.textContent = `Player ${currentPlayer}'s turn`;
+                }
+            }
+
+            // Handle cell click
+            function cellClickHandler(e) {
+                const cell = e.currentTarget;
+                const index = parseInt(cell.dataset.index, 10);
+
+                // Safety checks: game must be active, cell must be empty, board index valid
+                if (!gameActive) return;
+                if (board[index] !== null) return;
+                if (index < 0 || index > 8) return;
+
+                // Make the move
+                board[index] = currentPlayer;
+
+                // Check game state after move
+                const newStatus = getGameStatus();
+
+                if (newStatus.type === 'win' || newStatus.type === 'draw') {
+                    gameActive = false;
+                } else {
+                    // Switch player
+                    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                }
+
+                // Re-render board with updated state
+                renderBoard();
+            }
+
+            // Reset game to initial state
+            function resetGame() {
+                // Reset board array
+                board = Array(9).fill(null);
+                // X always starts
+                currentPlayer = 'X';
+                // Activate game
+                gameActive = true;
+
+                // Re-render everything
+                renderBoard();
+            }
+
+            // ----- Initialization & Event Listeners ------ 
+            function initGame() {
+                // Render initial board
+                renderBoard();
+
+                // Attach reset button listener
+                const resetBtn = document.getElementById('resetButton');
+                if (resetBtn) {
+                    // Remove previous listener to avoid duplicates (safe)
+                    resetBtn.replaceWith(resetBtn.cloneNode(true));
+                    const freshResetBtn = document.getElementById('resetButton');
+                    freshResetBtn.addEventListener('click', resetGame);
+
+                }
+            }
+            // Start everything after DOM is ready 
+            window.addEventListener('DOMContentLoaded', initGame);
+        })();
+
+    </script>
+    
+</body>
+
+</html>

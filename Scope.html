@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scope</title>
+</head>
+
+<body>
+    <script>
+        // let name = "Dravid"
+        // console.log(name);
+
+        // // Global Scope //
+
+        // let company = "KGN E-Learning";
+        // function showCompany(){
+        //     console.log(company);
+        // }
+        // showCompany();
+        // console.log(company);
+
+        // // Function Scope // 
+
+        // function student(){
+        //     var name = "Rahul";
+        //     console.log(name);
+        // }
+        // student();
+        // console.log(name);
+
+        // Login System
+
+        // function login(){
+        //     let password = "123456";
+        //     console.log("Login Success");
+        // }
+        // login();
+        // console.log(password);
+
+        // // Block Scope // 
+
+        // if(true){
+        //     let age = 22;
+        //     console.log(age);
+        // }
+        // console.log(age);
+
+        // // Shopping Cart //
+
+        // let loggedIn = true;
+        // if(loggedIn){
+        //     let coupon = "SAVE50";
+        //     console.log(coupon);
+        // }
+        // console.log(coupon);
+
+        // // Lexical Scope // 
+
+        // function outer() {
+        //     let name = "Rahul";
+
+        //     function inner() {
+        //         console.log(name);
+        //     }
+        //     inner();
+        // }
+        // outer();
+
+        // // Company Department // 
+
+        // function comapany() {
+        //     let companyName = "KGN E-Learning";
+
+        //     function employee() {
+        //         console.log(companyName);
+        //     }
+        //     employee();
+        // }
+        // company();
+
+        // Closure // 
+
+        // function counter () {
+        //     let count = 0;
+        //     return function () {
+        //         count++;
+        //         console.log(count);
+        //     };
+        // }
+        // const increment = counter();
+        // increment();
+        // increment();
+        // increment();
+
+        // // Website Visitor Counter // 
+
+        // function visitorCounter() {
+
+        //     let visitors = 0;
+        //     return function () {
+
+        //         visitors++;
+        //         console.log("Visitors:", visitors);
+
+        //     };
+        // }
+        // const visit = visitorCounter();
+        // visit();
+        // visit();
+        // visit();
+
+        // // Nested Scope // 
+
+        // let university = "Delhi University";
+        // function department() {
+        //     let course = "BCA";
+        //     function student(){
+        //         let name = "Rahul";
+        //         console.log(university);
+        //         console.log(course);
+        //         console.log(name);
+        //     }
+        //     student();
+        // }
+        // department();
+
+        // Scope Chain // 
+
+        // let country = "India";
+        // function state() {
+
+        //     let city = "Delhi"
+
+        //     function area() {
+        //         console.log(country);
+        //         console.log(city);
+        //     }
+        //     area();
+        // }
+        // state();
+
+        // // Login // 
+
+        // const website = "KGN E-Learning";
+        // function login(username){
+        //     let token = "ABC123";
+        //     function dashboard(){
+        //         console.log(username);
+        //         console.log(token);
+        //         console.log(website);
+        //     }
+        //     dashboard();
+        // }
+        // login("Mohan");
+
+        // E-Commerce // 
+
+        // const tax = 18;
+        // function checkout(price) {
+        //     let discount = 200;
+        //     function total() {
+        //         let finalPrice = price - discount;
+        //         console.log(finalPrice);
+        //         console.log(tax);
+        //     }
+        //     total();
+        // }
+        // checkout(5000);
+    </script>
+</body>
+
+</html>
